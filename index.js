@@ -67,30 +67,20 @@ app.post("/api/shorturl", async (req, res) => {
     }
 });
 
-app.get("/api/shorturl/:short_url", (req, res) => {
+app.get("/api/shorturl/:short_url", async (req, res) => {
     const { short_url } = req.params;
     const errorObj = { error: "invalid url" };
     if (!short_url) {
         return res.status(400).json(errorObj);
     }
-    // using .then().catch()
-    // Url.findOne({ short_url: short_url })
-    //     .then((result) => {
-    //         if (!result) res.json({ error: "no url" });
-    //         res.redirect(301, result.original_url);
-    //     })
-    //     .catch((err) => res.json(errorObj));
 
-    // using callback funcition
-    Url.findOne({ short_url: short_url }, (err, result) => {
-        if (err) {
-            return res.json(errorObj);
-        }
-        if (!result) {
-            return res.json({ error: "no url" });
-        }
+    try {
+        const result = Url.findOne({ short_url: short_url });
+        if (!result) return res.json({ error: "no url" });
         res.redirect(301, result.original_url);
-    });
+    } catch (error) {
+        return res.json(errorObj);
+    }
 });
 
 app.listen(port, function () {
