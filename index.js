@@ -75,7 +75,7 @@ app.get("/api/shorturl/:short_url", async (req, res) => {
     }
 
     try {
-        const result = Url.findOne({ short_url: short_url });
+        const result = await Url.findOne({ short_url: short_url });
         if (!result) return res.json({ error: "no url" });
         res.redirect(301, result.original_url);
     } catch (error) {
