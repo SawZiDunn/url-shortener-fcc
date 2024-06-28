@@ -5,4 +5,5 @@ const UrlSchema = new mongoose.Schema({
     short_url: { type: String, required: true, unique: true },
 });
 
-module.exports = mongoose.model("Url", UrlSchema);
+const Url = mongoose.model("Url", UrlSchema);
+module.exports = Url;
